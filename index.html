@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Next Chapter | 22</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Poppins:wght@300;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: radial-gradient(ellipse collections, #fff 0%, #e2b04a 40%, #8a6e2f 100%);
+            --glass: rgba(255, 255, 255, 0.1);
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: #050505; /* Deep black background */
+            color: white;
+            font-family: 'Poppins', sans-serif;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* The Main Container */
+        .scene {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            height: 80vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        /* Next Chapter Card (Glassmorphism) */
+        .card-bg {
+            position: absolute;
+            width: 350px;
+            height: 250px;
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            z-index: 1;
+            transform: rotate(-5deg) translate(20px, -40px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-bg h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin: 0;
+        }
+
+        /* The "22" Numbers */
+        .numbers {
+            position: relative;
+            z-index: 10;
+            font-family: 'Playfair Display', serif;
+            font-size: 10rem;
+            font-weight: 700;
+            background: linear-gradient(to bottom, #fff, #d4af37, #8a6e2f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.6));
+            margin-bottom: -50px;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        /* Floating Animation */
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* The Cake Placeholder */
+        .cake-container {
+            position: relative;
+            z-index: 5;
+            width: 280px;
+            filter: drop-shadow(0 20px 30px rgba(0,0,0,0.8));
+        }
+
+        .cake-container img {
+            width: 100%;
+            border-radius: 50%;
+        }
+
+        .happy-birthday {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 2.5rem;
+            margin-top: 10px;
+            z-index: 10;
+        }
+
+        /* Bottom Toast Notification */
+        .toast {
+            position: absolute;
+            bottom: 40px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 15px 30px;
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            z-index: 20;
+        }
+
+        .close-btn {
+            margin-top: 20px;
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 8px 25px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .close-btn:hover { background: rgba(255,255,255,0.4); }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <canvas id="fireworks"></canvas>
+
+    <div class="scene">
+        <div class="card-bg">
+            <h2>Next Chapter.</h2>
+        </div>
+
+        <div class="numbers">22</div>
+
+        <div class="cake-container">
+            <img src="https://cdn-icons-png.flaticon.com/512/4114/4114755.png" alt="Cake">
+        </div>
+
+        <div class="happy-birthday">happy birthday</div>
+
+        <div class="toast">
+            👑 HAPPY BIRTHDAY!<br>
+            WISHING YOU AN AMAZING YEAR AHEAD! 🎂
+        </div>
+
+        <button class="close-btn" onclick="location.reload()">Replay</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script>
+        // Trigger Fireworks on Load
+        function launchFireworks() {
+            var duration = 15 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            function randomInRange(min, max) {
+              return Math.random() * (max - min) + min;
+            }
+
+            var interval = setInterval(function() {
+              var timeLeft = animationEnd - Date.now();
+
+              if (timeLeft <= 0) {
+                return clearInterval(interval);
+              }
+
+              var particleCount = 50 * (timeLeft / duration);
+              // Fireworks from left and right
+              confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+              confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
+        }
+
+        // Gold Sparkles Effect
+        function launchGoldSparkles() {
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#ffd700', '#fdb813', '#ffffff']
+            });
+        }
+
+        window.onload = () => {
+            launchFireworks();
+            setTimeout(launchGoldSparkles, 1000);
+        };
+    </script>
+</body>
+</html>
